@@ -1,31 +1,52 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
-export default function PhotoWidgetCropper({ setImage, imagePreview }) {
-  let cropper;
+export default function PhotoWidgetCropper({ setCropper, imagePreview }) {
+  //   let cropper;
 
-  const onCropperInit = component => {
-    cropper = component;
-  };
+  //   const onCropperInit = component => {
+  //     cropper = component;
+  //   };
 
-  const cropImage = () => {
-    // cropper.getCroppedCanvas().toDataURL()
-    if (cropper && typeof cropper.getCroppedCanvas() === 'undefined') {
-      return;
-    }
-    cropper.getCroppedCanvas().toBlob(blob => {
-      setImage(blob);
-    }, 'image/jpeg');
-  };
+  //   const cropImage = () => {
+  //     // cropper.getCroppedCanvas().toDataURL()
+  //     if (cropper && typeof cropper.getCroppedCanvas() === 'undefined') {
+  //       return;
+  //     }
+  //     cropper.getCroppedCanvas().toBlob(blob => {
+  //       setImage(blob);
+  //     }, 'image/jpeg');
+  //   };
+
+  //   return (
+  //     <Cropper
+  //       ref={cropper}
+  //       src={imagePreview}
+  //       style={{ height: 200, width: '100%' }}
+  //       // Cropper.js options
+  //       initialAspectRatio={1}
+  //       preview='.img-preview'
+  //       guides={false}
+  //       viewMode={1}
+  //       dragMode='move'
+  //       scalable={true}
+  //       cropBoxMovable={true}
+  //       cropBoxResizable={true}
+  //       crop={cropImage}
+  //       onInitialized={onCropperInit}
+  //     />
+  //   );
+
+  const cropperRef = useRef(null);
 
   return (
     <Cropper
-      ref={cropper}
+      ref={cropperRef}
       src={imagePreview}
       style={{ height: 200, width: '100%' }}
       // Cropper.js options
-      initialAspectRatio={1}
+      aspectRatio={1}
       preview='.img-preview'
       guides={false}
       viewMode={1}
@@ -33,8 +54,7 @@ export default function PhotoWidgetCropper({ setImage, imagePreview }) {
       scalable={true}
       cropBoxMovable={true}
       cropBoxResizable={true}
-      crop={cropImage}
-      onInitialized={onCropperInit}
+      crop={() => setCropper(cropperRef.current.cropper)}
     />
   );
 }
